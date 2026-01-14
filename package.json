@@ -1,0 +1,51 @@
+{
+  "name": "tree-sitter-onyx",
+  "version": "0.1.0",
+  "description": "Tree-sitter grammar for Onyx DSL",
+  "main": "bindings/node",
+  "types": "bindings/node",
+  "keywords": [
+    "tree-sitter",
+    "parser",
+    "onyx",
+    "dsl",
+    "security"
+  ],
+  "files": [
+    "grammar.js",
+    "binding.gyp",
+    "prebuilds/**",
+    "bindings/node/*",
+    "queries/*",
+    "src/**",
+    "*.wasm"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/tree-sitter-onyx.git"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "tree-sitter-cli": "^0.25.0"
+  },
+  "scripts": {
+    "generate": "tree-sitter generate",
+    "test": "tree-sitter test",
+    "parse": "tree-sitter parse",
+    "build": "tree-sitter generate && tree-sitter build",
+    "build-wasm": "tree-sitter build --wasm"
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.onyx",
+      "file-types": [
+        "onyx"
+      ],
+      "injection-regex": "^onyx$"
+    }
+  ],
+  "dependencies": {
+    "node-addon-api": "^8.0.0",
+    "node-gyp-build": "^4.8.0"
+  }
+}

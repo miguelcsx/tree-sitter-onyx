@@ -1,0 +1,225 @@
+================================================================================
+Op declaration simple
+================================================================================
+
+op UsersGet = http.GET "/users/{id}"
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (op_declaration
+    name: (identifier)
+    definition: (op_definition
+      protocol: (identifier)
+      method: (identifier)
+      target: (string))))
+
+================================================================================
+Op declaration with metadata
+================================================================================
+
+op Login = http.POST "/login" {
+  tags: ["auth"],
+  docs: "User login",
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (op_declaration
+    name: (identifier)
+    definition: (op_definition
+      protocol: (identifier)
+      method: (identifier)
+      target: (string)
+      metadata: (object
+        (field
+          key: (identifier)
+          value: (array
+            (string)))
+        (field
+          key: (identifier)
+          value: (string))))))
+
+================================================================================
+Op declaration with query
+================================================================================
+
+op UserGql = gql.query 'query(id:ID!)' "vars"
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (op_declaration
+    name: (identifier)
+    definition: (op_definition
+      protocol: (identifier)
+      method: (identifier)
+      target: (string)
+      query: (string))))
+
+================================================================================
+Profile declaration
+================================================================================
+
+profile prod {
+  base: env.BASE_URL,
+  auth: bearer(env.TOKEN),
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (profile_declaration
+    name: (identifier)
+    body: (profile_block
+      (field
+        key: (identifier)
+        value: (env_reference
+          name: (identifier)))
+      (field
+        key: (identifier)
+        value: (call_expression
+          function: (identifier)
+          arguments: (env_reference
+            name: (identifier)))))))
+
+================================================================================
+Function declaration
+================================================================================
+
+fn add(a, b) = a + b
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_declaration
+    name: (identifier)
+    params: (parameter
+      name: (identifier))
+    params: (parameter
+      name: (identifier))
+    body: (binary_expression
+      left: (identifier)
+      right: (identifier))))
+
+================================================================================
+Function with types
+================================================================================
+
+fn greet(name: string) -> string = "Hello, " + name
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_declaration
+    name: (identifier)
+    params: (parameter
+      name: (identifier)
+      type: (type_annotation
+        (identifier)))
+    return_type: (type_annotation
+      (identifier))
+    body: (binary_expression
+      left: (string)
+      right: (identifier))))
+
+================================================================================
+Let declaration
+================================================================================
+
+let x = 42
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (let_declaration
+    pattern: (identifier)
+    value: (integer)))
+
+================================================================================
+Use declaration simple
+================================================================================
+
+use prod
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (use_declaration
+    target: (identifier)))
+
+================================================================================
+Use declaration with block
+================================================================================
+
+use prod {
+  run UsersGet { id: 42 }
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (use_declaration
+    target: (identifier)
+    body: (block
+      (run_expression
+        target: (identifier)
+        args: (object
+          (field
+            key: (identifier)
+            value: (integer)))))))
+
+================================================================================
+Use path import
+================================================================================
+
+use std.req
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (use_declaration
+    target: (use_path
+      (identifier)
+      (identifier))))
+
+================================================================================
+Use glob import
+================================================================================
+
+use std.*
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (use_declaration
+    target: (use_glob
+      (identifier))))
+
+================================================================================
+Use group import
+================================================================================
+
+use std.{req, gen}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (use_declaration
+    target: (use_group
+      (identifier)
+      (identifier)
+      (identifier))))
+
+================================================================================
+Import declaration
+================================================================================
+
+import "utils.onyx"
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (import_declaration
+    path: (string)))

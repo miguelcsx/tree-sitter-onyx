@@ -1,0 +1,22 @@
+{
+  "grammars": [
+    {
+      "name": "onyx",
+      "path": ".",
+      "scope": "source.onyx",
+      "file-types": ["onyx"],
+      "injection-regex": "^onyx$",
+      "highlights": "queries/highlights.scm",
+      "locals": "queries/locals.scm",
+      "tags": "queries/tags.scm"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "Tree-sitter grammar for Onyx DSL - a declarative security testing language"
+  },
+  "bindings": {
+    "node": true
+  }
+}

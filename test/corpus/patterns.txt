@@ -1,0 +1,70 @@
+================================================================================
+Wildcard pattern in match
+================================================================================
+
+match x {
+  _ => "default",
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (match_expression
+    value: (identifier)
+    (match_arm
+      pattern: (wildcard_pattern)
+      body: (string))))
+
+================================================================================
+Literal patterns in match
+================================================================================
+
+match status {
+  200 => "ok",
+  "error" => "bad",
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (match_expression
+    value: (identifier)
+    (match_arm
+      pattern: (integer)
+      body: (string))
+    (match_arm
+      pattern: (string)
+      body: (string))))
+
+================================================================================
+Let with destructuring array
+================================================================================
+
+let [a, b] = arr
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (let_declaration
+    pattern: (array_pattern
+      (identifier)
+      (identifier))
+    value: (identifier)))
+
+================================================================================
+Let with destructuring object
+================================================================================
+
+let { x, y: val } = obj
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (let_declaration
+    pattern: (object_pattern
+      (field_pattern
+        key: (identifier))
+      (field_pattern
+        key: (identifier)
+        pattern: (identifier)))
+    value: (identifier)))

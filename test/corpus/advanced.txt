@@ -1,0 +1,132 @@
+================================================================================
+Match with guard
+================================================================================
+
+match value {
+  x if x > 10 => "large",
+  x => "small",
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (match_expression
+    value: (identifier)
+    (match_arm
+      pattern: (identifier)
+      guard: (match_guard
+        condition: (binary_expression
+          left: (identifier)
+          right: (integer)))
+      body: (string))
+    (match_arm
+      pattern: (identifier)
+      body: (string))))
+
+================================================================================
+Range pattern in match
+================================================================================
+
+match code {
+  1..10 => "low",
+  11..100 => "medium",
+  _ => "high",
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (match_expression
+    value: (identifier)
+    (match_arm
+      pattern: (range_pattern
+        start: (integer)
+        end: (integer))
+      body: (string))
+    (match_arm
+      pattern: (range_pattern
+        start: (integer)
+        end: (integer))
+      body: (string))
+    (match_arm
+      pattern: (wildcard_pattern)
+      body: (string))))
+
+================================================================================
+Open-ended range start only
+================================================================================
+
+..10
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (range_expression
+    end: (integer)))
+
+================================================================================
+Open-ended range end only
+================================================================================
+
+10..
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (range_expression
+    start: (integer)))
+
+================================================================================
+Stream check with all
+================================================================================
+
+check {
+  all(ok)
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (check_expression
+    body: (check_block
+      (stream_check
+        aggregator: (stream_aggregator)
+        condition: (identifier)))))
+
+================================================================================
+Stream check with any and severity
+================================================================================
+
+check {
+  any(code == 500 -> high "Server error")
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (check_expression
+    body: (check_block
+      (stream_check
+        aggregator: (stream_aggregator)
+        condition: (binary_expression
+          left: (identifier)
+          right: (integer))
+        severity: (severity)
+        title: (string)))))
+
+================================================================================
+Stream check with none
+================================================================================
+
+check {
+  none(err)
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (check_expression
+    body: (check_block
+      (stream_check
+        aggregator: (stream_aggregator)
+        condition: (identifier)))))

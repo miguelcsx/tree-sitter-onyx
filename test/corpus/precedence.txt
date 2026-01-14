@@ -1,0 +1,125 @@
+================================================================================
+Arithmetic precedence
+================================================================================
+
+1 + 2 * 3
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (binary_expression
+    left: (integer)
+    right: (binary_expression
+      left: (integer)
+      right: (integer))))
+
+================================================================================
+Arithmetic left associativity
+================================================================================
+
+1 - 2 - 3
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (binary_expression
+    left: (binary_expression
+      left: (integer)
+      right: (integer))
+    right: (integer)))
+
+================================================================================
+Comparison and logical
+================================================================================
+
+a == b && c == d
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (binary_expression
+    left: (binary_expression
+      left: (identifier)
+      right: (identifier))
+    right: (binary_expression
+      left: (identifier)
+      right: (identifier))))
+
+================================================================================
+Logical or and and precedence
+================================================================================
+
+a || b && c
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (binary_expression
+    left: (identifier)
+    right: (binary_expression
+      left: (identifier)
+      right: (identifier))))
+
+================================================================================
+Unary precedence
+================================================================================
+
+!a && b
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (binary_expression
+    left: (unary_expression
+      operand: (identifier))
+    right: (identifier)))
+
+================================================================================
+Postfix precedence
+================================================================================
+
+obj.field.method()
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (call_expression
+    function: (field_expression
+      object: (field_expression
+        object: (identifier)
+        field: (identifier))
+      field: (identifier))))
+
+================================================================================
+Complex chained expression
+================================================================================
+
+result.data[0].name
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (field_expression
+    object: (index_expression
+      object: (field_expression
+        object: (identifier)
+        field: (identifier))
+      index: (integer))
+    field: (identifier)))
+
+================================================================================
+Pipe has lowest precedence
+================================================================================
+
+a + b |> check { ok }
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (pipe_expression
+    left: (binary_expression
+      left: (identifier)
+      right: (identifier))
+    right: (check_expression
+      body: (check_block
+        (identifier)))))

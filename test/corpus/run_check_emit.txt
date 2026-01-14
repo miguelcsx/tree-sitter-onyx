@@ -1,0 +1,221 @@
+================================================================================
+Simple run
+================================================================================
+
+run UsersGet
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (run_expression
+    target: (identifier)))
+
+================================================================================
+Run with args
+================================================================================
+
+run UsersGet { id: 42 }
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (run_expression
+    target: (identifier)
+    args: (object
+      (field
+        key: (identifier)
+        value: (integer)))))
+
+================================================================================
+Run with with clause
+================================================================================
+
+run UsersGet with { id: ~int(-10..10) }
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (run_expression
+    target: (identifier)
+    with: (with_clause
+      variations: (object
+        (field
+          key: (identifier)
+          value: (generator_expression
+            kind: (identifier)
+            args: (range_expression
+              start: (integer)
+              end: (integer))))))))
+
+================================================================================
+Run with zip
+================================================================================
+
+run Login with zip { user: @users, pass: @passes }
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (run_expression
+    target: (identifier)
+    with: (with_clause
+      variations: (object
+        (field
+          key: (identifier)
+          value: (pack_expression
+            source: (identifier)))
+        (field
+          key: (identifier)
+          value: (pack_expression
+            source: (identifier)))))))
+
+================================================================================
+Run block
+================================================================================
+
+run {
+  login: Login { user: "test" }
+  profile: Profile { token: login.data.token }
+  path: login -> profile
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (run_expression
+    block: (run_block
+      (run_step
+        name: (identifier)
+        operation: (identifier)
+        args: (object
+          (field
+            key: (identifier)
+            value: (string))))
+      (run_step
+        name: (identifier)
+        operation: (identifier)
+        args: (object
+          (field
+            key: (identifier)
+            value: (field_expression
+              object: (field_expression
+                object: (identifier)
+                field: (identifier))
+              field: (identifier)))))
+      (run_path
+        chain: (path_chain
+          (identifier)
+          (identifier))))))
+
+================================================================================
+Check expression
+================================================================================
+
+check { ok }
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (check_expression
+    body: (check_block
+      (identifier))))
+
+================================================================================
+Check with assertions
+================================================================================
+
+check {
+  ok
+  code == 200
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (check_expression
+    body: (check_block
+      (identifier)
+      (binary_expression
+        left: (identifier)
+        right: (integer)))))
+
+================================================================================
+Check with when rules
+================================================================================
+
+check {
+  when code == 500 -> high "Server error"
+  when err ~= /sql/i -> medium "SQL indicator"
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (check_expression
+    body: (check_block
+      (when_rule
+        condition: (binary_expression
+          left: (identifier)
+          right: (integer))
+        severity: (severity)
+        title: (string))
+      (when_rule
+        condition: (binary_expression
+          left: (identifier)
+          right: (regex))
+        severity: (severity)
+        title: (string)))))
+
+================================================================================
+Emit simple
+================================================================================
+
+emit
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (emit_expression))
+
+================================================================================
+Emit with format
+================================================================================
+
+emit.findings
+emit.summary
+emit.json("out.json")
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (emit_expression
+    format: (identifier))
+  (emit_expression
+    format: (identifier))
+  (emit_expression
+    format: (identifier)
+    args: (string)))
+
+================================================================================
+Full pipeline
+================================================================================
+
+run Op { id: 1 }
+|> check { ok }
+|> emit
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (pipe_expression
+    left: (pipe_expression
+      left: (run_expression
+        target: (identifier)
+        args: (object
+          (field
+            key: (identifier)
+            value: (integer))))
+      right: (check_expression
+        body: (check_block
+          (identifier))))
+    right: (emit_expression)))

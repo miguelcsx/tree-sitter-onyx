@@ -1,4 +1,5 @@
 ; Onyx tags queries for navigation
+; Matches actual implemented syntax
 
 (op_declaration
   name: (identifier) @name) @definition.function

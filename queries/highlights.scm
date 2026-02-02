@@ -1,4 +1,5 @@
 ; Onyx syntax highlighting queries
+; Matches the actual implemented syntax in onyx-syntax crate
 
 ; Keywords
 [
@@ -7,13 +8,10 @@
   "fn"
   "let"
   "use"
-  "import"
   "run"
   "with"
   "zip"
-  "check"
   "emit"
-  "when"
   "path"
   "if"
   "else"
@@ -70,7 +68,6 @@
 (float) @number.float
 (string) @string
 (byte_string) @string.special
-(regex) @string.regexp
 (duration) @number
 (size) @number
 
@@ -100,8 +97,7 @@
 (let_declaration
   pattern: (identifier) @variable)
 
-(parameter
-  name: (identifier) @variable.parameter)
+(parameter) @variable.parameter
 
 ; Op definition
 (op_definition
@@ -136,26 +132,10 @@
 (path_chain
   (identifier) @variable)
 
-; Generators
-(generator_expression
-  "~" @operator
-  kind: (identifier) @function.builtin)
-
-; Packs
-(pack_expression
-  "@" @operator
-  source: (identifier) @constant)
-
 ; Environment references
 (env_reference
   "env" @variable.builtin
   name: (identifier) @variable.builtin)
-
-; Severity levels
-(severity) @type.builtin
-
-; Stream aggregators
-(stream_aggregator) @function.builtin
 
 ; Match guards
 (match_guard
@@ -178,10 +158,6 @@
 (use_group
   (identifier) @module)
 
-; Import paths
-(import_declaration
-  path: (string) @string.special.path)
-
 ; Match arms
 (match_arm
   pattern: (identifier) @constant)
@@ -189,6 +165,3 @@
 ; Lambda parameters
 (lambda_expression
   params: (identifier) @variable.parameter)
-
-; Type annotations
-(type_annotation) @type
